@@ -1,4 +1,6 @@
-from gensim.models import LdaMulticore
+from gensim.models import LdaMulticore, CoherenceModel
+import logging
+logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 
 
 # find the optimal number of topics 
