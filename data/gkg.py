@@ -7,4 +7,4 @@ gd2 = gdelt.gdelt(version=2)
 df = gd2.Search("2020-11-24",table='gkg', coverage=True)
 
 # persist to local storage just in case
-df.to_csv("gkg_20201124", index=False)
+df.to_csv("gkg_20201124.csv", index=False)
