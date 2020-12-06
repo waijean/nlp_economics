@@ -2,7 +2,7 @@ import pandas as pd
 from typing import List
 
 
-def build_design_matrix(df:pd.DataFrame, date_col, var_col:str, horizon:int):
+def build_design_matrix(df:pd.DataFrame, date_col, var_col:str, horizon:int, start_date:str=None, end_date:str=None):
     """
     Return a design matrix where each row is a monthly training sample, and each column is a feature/target.
 
@@ -21,6 +21,8 @@ def build_design_matrix(df:pd.DataFrame, date_col, var_col:str, horizon:int):
     design_df["target"] = design_df[var_col].shift(periods=-horizon)
     # drop rows without features
     design_df = design_df.dropna().reset_index(drop=True)
+    if start_date:
+        design_df = design_df.set_index("DATE").loc[start_date:end_date].reset_index()
     return design_df.drop(columns=var_col)
 
 
