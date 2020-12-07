@@ -1,4 +1,6 @@
-from typing import Tuple
+import time
+from typing import Tuple, List
+from multiprocessing.pool import ThreadPool
 
 import requests
 import unicodedata
@@ -44,3 +46,22 @@ def get_article(url: str) -> Tuple[str, str]:
     cleaned_content = unicodedata.normalize("NFKD", content)
 
     return title_text, cleaned_content
+
+
+def get_articles(urls:List[str])->List[Tuple[str, str]]:
+    """
+    Use multithreading to get articles from a list of urls.
+
+    Args:
+        urls:
+
+    Returns: A list of 2-tuples (title, content)
+
+    """
+    print(f"Processing a total of {len(urls)} articles")
+    # in case we have less than 10 urls
+    threads = min(10, len(urls))
+    pool = ThreadPool(threads)
+    # map results are ordered
+    result = pool.map(get_article, urls)
+    return result
