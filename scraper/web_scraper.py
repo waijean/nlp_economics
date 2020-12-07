@@ -29,21 +29,26 @@ def get_article(url: str) -> Tuple[str, str]:
     soup = BeautifulSoup(page.content, "html.parser")
     results = soup.find(id="js-article-text")
 
-    # get title
-    title = results.find("h2")
-    title_text = title.get_text(strip=True)
+    # in case result is None
+    if results is None:
+        title_text, cleaned_content = "", ""
 
-    # get content
-    article_body = results.find("div", itemprop="articleBody")
-    article_para = article_body.find_all(
-        "p", class_="mol-para-with-font", recursive=False
-    )
+    else:
+        # get title
+        title = results.find("h2")
+        title_text = title.get_text(strip=True)
 
-    #  set strip=True to strip whitespace from the beginning and end of each bit of text
-    para_list = [para.get_text(strip=True) for para in article_para]
-    content = " ".join(para_list)
-    # remove \xao
-    cleaned_content = unicodedata.normalize("NFKD", content)
+        # get content
+        article_body = results.find("div", itemprop="articleBody")
+        article_para = article_body.find_all(
+            "p", class_="mol-para-with-font", recursive=False
+        )
+
+        #  set strip=True to strip whitespace from the beginning and end of each bit of text
+        para_list = [para.get_text(strip=True) for para in article_para]
+        content = " ".join(para_list)
+        # remove \xao
+        cleaned_content = unicodedata.normalize("NFKD", content)
 
     return title_text, cleaned_content
 
