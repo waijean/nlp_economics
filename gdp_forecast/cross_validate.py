@@ -114,6 +114,7 @@ def evaluate_features(
     estimator,
     initial: int,
     period: int,
+    return_model: bool,
     start_date: str = "2015-03-01",
     end_date: str = "2020-03-01",
 ):
@@ -126,12 +127,13 @@ def evaluate_features(
 
     Args:
         df: A DataFrame which contains a date, feature(s) and a variable column.
-        date_col: A string for the date column name
+        date_col: A string for the date column name (ideally uppercase to avoid name collision with features)
         var_col: A string for the variable name we wish to forecast
         horizon:
         estimator:
         initial:
         period:
+        return_model:
         start_date:
         end_date:
 
@@ -160,6 +162,7 @@ def evaluate_features(
         initial=initial,
         period=period,
         horizon=horizon,
+        return_model=return_model
     )
 
     return design_df, result_df

@@ -49,6 +49,7 @@ def test_evaluate_features(test_input_df, test_design_df, test_result_df):
         estimator=lr,
         initial=3,
         period=1,
+        return_model=False,
         start_date="2019-12-01",
         end_date="2020-11-01",
     )
