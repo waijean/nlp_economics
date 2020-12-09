@@ -35,9 +35,9 @@ def build_design_matrix(
     # use date as an index to filter and sort
     design_df = df.set_index(date_col).loc[start_date:end_date].sort_index()
     # create lag column
-    design_df["GDP_lag"] = design_df[var_col].shift(periods=1)
+    design_df[f"{var_col}_lag"] = design_df[var_col].shift(periods=1)
     # create target column
-    design_df["GDP_forecast"] = design_df[var_col].shift(periods=-horizon)
+    design_df[f"{var_col}_forecast"] = design_df[var_col].shift(periods=-horizon)
 
     # drop variable column
     design_df = design_df.drop(columns=var_col)
@@ -154,14 +154,14 @@ def evaluate_features(
     )
 
     feature_cols = [
-        col for col in design_df.columns if col not in (date_col, "GDP_forecast")
+        col for col in design_df.columns if col not in (date_col, f"{var_col}_forecast")
     ]
 
     result_df = cross_validate(
         design_df,
         date_col=date_col,
         feature_cols=feature_cols,
-        target_col="GDP_forecast",
+        target_col=f"{var_col}_forecast",
         estimator=estimator,
         window=window,
         period=period,

@@ -12,7 +12,7 @@ def test_input_df():
                 start=datetime(2019, 12, 1), end=datetime(2020, 11, 1), freq="MS"
             ),
             "feature": [np.nan] + list(range(1, 20, 2)) + [np.nan],
-            "gdp": range(0, 12),
+            "GDP": range(0, 12),
         }
     )
     return input_df

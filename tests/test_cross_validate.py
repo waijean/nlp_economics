@@ -16,7 +16,7 @@ def test_build_design_matrix(test_input_df, test_design_df):
     actual_design_df = build_design_matrix(
         test_input_df,
         date_col="date",
-        var_col="gdp",
+        var_col="GDP",
         horizon=1,
         start_date="2019-12-01",
         end_date="2020-11-01",
@@ -44,7 +44,7 @@ def test_evaluate_features(test_input_df, test_design_df, test_result_df):
     actual_design, actual_result = evaluate_features(
         test_input_df,
         date_col="date",
-        var_col="gdp",
+        var_col="GDP",
         horizon=1,
         estimator=lr,
         window=3,
