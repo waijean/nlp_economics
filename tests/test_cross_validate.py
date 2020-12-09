@@ -32,7 +32,7 @@ def test_cross_validate(test_design_df, test_result_df):
         feature_cols=["feature", "GDP_lag"],
         target_col="GDP_forecast",
         estimator=lr,
-        initial=3,
+        window=3,
         period=1,
         horizon=1,
     )
@@ -47,7 +47,7 @@ def test_evaluate_features(test_input_df, test_design_df, test_result_df):
         var_col="gdp",
         horizon=1,
         estimator=lr,
-        initial=3,
+        window=3,
         period=1,
         return_model=False,
         start_date="2019-12-01",

@@ -52,16 +52,18 @@ def cross_validate(
     feature_cols: List[str],
     target_col: str,
     estimator,
-    initial: int,
+    window: int,
     period: int,
     horizon: int,
     return_model: bool = False,
 ):
     """
-    Cross validate time series by fitting the model on the train set and predicting on a single test sample.
+    Cross validate time series with fixed rolling window.
+
+    Since the horizon is fixed, each model will only predict on a single test sample.
 
     This cross validation procedure will be done for a range of historical cutoffs by specifying the size of the
-    initial training period (initial) and the spacing between cutoff dates (period).
+    training window (window) and the spacing between cutoff dates (period).
 
     Args:
         df: A DataFrame which contains a date, feature(s) and a target column.
@@ -70,7 +72,7 @@ def cross_validate(
         target_col: A string for the target column name
         estimator: A duck typed object which implements fit and predict method. If using sklearn estimator, need to
                    instantiate the object before passing it in.
-        initial: An integer to specify the size of the initial training period
+        window: An integer to specify the size of the training window
         period: An integer to specify the spacing between cutoff dates
         horizon: An integer to specify the forecast horizon
         return_model: A flag to determine whether to return the fitted model
@@ -79,15 +81,17 @@ def cross_validate(
 
     """
     df = df.sort_values(by=date_col).reset_index(drop=True)
-    assert initial < len(
+    assert window < len(
         df
-    ), "Initial training period is not strictly smaller than sample size"
-    # set the first train_end date
-    train_end = initial
+    ), "Training window should be strictly smaller than sample size"
+    # set the first train_start date
+    train_start = 0
     result_list = []
-    while train_end + horizon + 1 <= len(df):
-        # df is 0-indexed so subtract 1 from train_end
-        train_df = df.loc[0 : train_end - 1]
+    # as long as train + test period is within the sample size
+    while train_start + window + horizon < len(df):
+        train_end = train_start + window
+        # loc filter is close-ended so subtract 1 from train_end
+        train_df = df.loc[train_start : train_end - 1]
         model = estimator.fit(train_df[feature_cols], train_df[target_col])
         # set a single test sample
         test_df = df.loc[[train_end + horizon]]
@@ -101,7 +105,7 @@ def cross_validate(
         if return_model:
             result["model"] = model
         result_list.append(result)
-        train_end += period
+        train_start += period
     result_df = pd.DataFrame(result_list)
     return result_df
 
@@ -112,7 +116,7 @@ def evaluate_features(
     var_col: str,
     horizon: int,
     estimator,
-    initial: int,
+    window: int,
     period: int,
     return_model: bool,
     start_date: str = "2015-03-01",
@@ -131,7 +135,7 @@ def evaluate_features(
         var_col: A string for the variable name we wish to forecast
         horizon:
         estimator:
-        initial:
+        window:
         period:
         return_model:
         start_date:
@@ -159,7 +163,7 @@ def evaluate_features(
         feature_cols=feature_cols,
         target_col="GDP_forecast",
         estimator=estimator,
-        initial=initial,
+        window=window,
         period=period,
         horizon=horizon,
         return_model=return_model
