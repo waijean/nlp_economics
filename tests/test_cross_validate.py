@@ -2,7 +2,7 @@ from datetime import datetime
 
 from pandas._testing import assert_frame_equal
 
-from gdp_forecast.cross_validate import (
+from forecast.cross_validate import (
     cross_validate,
     build_design_matrix,
     evaluate_features,
