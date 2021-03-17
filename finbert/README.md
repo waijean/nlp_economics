@@ -20,5 +20,5 @@ This will write the output `predictions.csv` to `output_dir`.
 Each sentences in `text_path` is assumed to be separated by '\n\n'. 
 
 ```bash
-python scripts/predict.py --text_path daily_mail_sentences.txt --output_dir output/ --model_path models/classifier_model/finbert-sentiment
+python predict.py --text_path daily_mail_first_sentence.txt --output_dir output/ --model_path models/classifier_model/finbert-sentiment
 ```
