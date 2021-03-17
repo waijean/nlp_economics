@@ -4,7 +4,7 @@ Install the dependencies and activate it
 ```
 conda env create -f environment.yml
 conda activate finbert
-export PYTHONPATH=&dollar;PYTHONPATH:<root module path>
+export PYTHONPATH=&#0036;PYTHONPATH:<root module path>
 ```
 
 Create a directory to store the model
