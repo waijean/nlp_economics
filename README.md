@@ -9,6 +9,7 @@ The purpose of this project is to forecast UK macroeconomic indicators using NLP
 | `scraper` | web scraping code to extract Daily Mail news articles |
 | `tests`    | test codes for `forecasts` and `scraper`|
 | `topic_modeling` | notebooks to explore LDA topic modeling techniques on news articles |
+| `finbert` | use pre-trained finBERT to predict sentiment |
 
 ### Reference
 
